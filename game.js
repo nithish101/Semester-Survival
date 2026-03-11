@@ -9,7 +9,7 @@
   const TOTAL_WEEKS = 6;
   const BASE_INCOME = 500;
   const MIN_INCOME = 200;
-  const SAVINGS_GOAL = 1000;
+  const SAVINGS_GOAL = 800;
   const METER_MAX = 100;
   const METER_MIN = 0;
   const RED_THRESHOLD = 30;

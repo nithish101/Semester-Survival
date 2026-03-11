@@ -10,7 +10,7 @@ A budgeting simulation game where you manage your finances during a six-week col
 - Allocate your income across 5 spending categories: Food, Social, Transportation, Savings, and Miscellaneous
 - Respond to unexpected life events that cost money
 - Keep your life meters above **80** — each point below costs you income next week
-- Save **$1,000** for grad school to win
+- Save **$800** for grad school to win
 
 ## Game Features
 
