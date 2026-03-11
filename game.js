@@ -8,25 +8,32 @@
   /* ---------- Constants ---------- */
   const TOTAL_WEEKS = 6;
   const BASE_INCOME = 500;
-  const REDUCED_INCOME = 300;
-  const SAVINGS_GOAL = 3000;
+  const MIN_INCOME = 200;
+  const SAVINGS_GOAL = 1000;
   const METER_MAX = 100;
   const METER_MIN = 0;
   const RED_THRESHOLD = 30;
   const YELLOW_THRESHOLD = 60;
+  const INCOME_PENALTY_THRESHOLD = 80; // meters below this reduce income
+  const INCOME_PENALTY_PER_POINT = 2.5; // $ lost per point below threshold, per meter
 
   /* How much a well-funded category boosts its meter per $1 spent */
   const METER_GAIN_RATE = {
-    food: 0.07,         // Food → Health
-    social: 0.08,       // Social → Happiness
-    transport: 0.07,    // Transport → Academic Success
-    savings: 0.06,      // Savings → Financial Stability
-    misc: 0.03,         // Misc → small Happiness
+    food: 0.05,         // Food → Health  (ideal $150 → +7)
+    social: 0.10,       // Social → Happiness (ideal $75 → +8)
+    transport: 0.22,    // Transport → Academic Success (ideal $30 → +7)
+    savings: 0.035,     // Savings → Financial Stability (ideal $220 → +8)
+    misc: 0.12,         // Misc → small Happiness (ideal $25 → +3)
   };
 
-  /* Decay when category receives < $50 */
-  const LOW_SPEND_THRESHOLD = 50;
-  const LOW_SPEND_PENALTY = 15;
+  /* Per-category low-spend thresholds and penalty */
+  const LOW_SPEND = {
+    food: { threshold: 80, penalty: 15 },
+    social: { threshold: 40, penalty: 12 },
+    transport: { threshold: 15, penalty: 12 },
+    savings: { threshold: 100, penalty: 12 },
+    misc: { threshold: 10, penalty: 8 },
+  };
 
   /* Passive decay applied to all meters each week */
   const PASSIVE_DECAY = 5;
@@ -35,42 +42,42 @@
   const EVENTS = [
     {
       title: 'Friend invites you to dinner',
-      description: 'Your best friend wants to grab dinner at a nice restaurant downtown. It would cost about $30.',
+      description: 'Your best friend wants to grab dinner at a nice restaurant downtown. It would cost about $20.',
       options: [
-        { label: 'Go to dinner — $30', cost: 30, effects: { happiness: 12 } },
-        { label: 'Decline', cost: 0, effects: { happiness: -5 } },
+        { label: 'Go to dinner — $20', cost: 20, effects: { happiness: 15 } },
+        { label: 'Decline', cost: 0, effects: { happiness: -10 } },
       ],
     },
     {
       title: 'Laptop breaks',
-      description: 'Your laptop screen cracked and it will cost $300 to repair. You need it for classes.',
+      description: 'Your laptop screen cracked and it will cost $100 to repair. You need it for classes.',
       options: [
-        { label: 'Repair laptop — $300', cost: 300, effects: { academicSuccess: 10 } },
-        { label: 'Delay repair', cost: 0, effects: { academicSuccess: -18 } },
+        { label: 'Repair laptop — $100', cost: 100, effects: { academicSuccess: 15 } },
+        { label: 'Delay repair', cost: 0, effects: { academicSuccess: -25 } },
       ],
     },
     {
       title: 'Club dues are due',
-      description: 'The club you joined is collecting semester dues of $100. Staying keeps your social circle strong.',
+      description: 'The club you joined is collecting semester dues of $50. Staying keeps your social circle strong.',
       options: [
-        { label: 'Pay dues — $100', cost: 100, effects: { happiness: 10 } },
-        { label: 'Skip club this semester', cost: 0, effects: { happiness: -8 } },
+        { label: 'Pay dues — $50', cost: 50, effects: { happiness: 12 } },
+        { label: 'Skip club this semester', cost: 0, effects: { happiness: -15 } },
       ],
     },
     {
       title: 'Concert with friends',
-      description: 'Your friends scored tickets to a concert this weekend. A ticket costs $60.',
+      description: 'Your friends scored tickets to a concert this weekend. A ticket costs $30.',
       options: [
-        { label: 'Attend concert — $60', cost: 60, effects: { happiness: 14 } },
-        { label: 'Stay home', cost: 0, effects: {} },
+        { label: 'Attend concert — $30', cost: 30, effects: { happiness: 15 } },
+        { label: 'Stay home', cost: 0, effects: { happiness: -8 } },
       ],
     },
     {
       title: 'Medical bill arrives',
-      description: 'You received a medical bill for $120 from a recent clinic visit.',
+      description: 'You received a medical bill for $60 from a recent clinic visit.',
       options: [
-        { label: 'Pay bill — $120', cost: 120, effects: {} },
-        { label: 'Delay payment', cost: 0, effects: { health: -15 } },
+        { label: 'Pay bill — $60', cost: 60, effects: { health: 10 } },
+        { label: 'Delay payment', cost: 0, effects: { health: -20 } },
       ],
     },
   ];
@@ -85,10 +92,10 @@
       savings: 0,
       income: BASE_INCOME,
       lifeMeters: {
-        health: 60,
-        happiness: 60,
-        academicSuccess: 60,
-        financialStability: 60,
+        health: 80,
+        happiness: 80,
+        academicSuccess: 80,
+        financialStability: 80,
       },
       budget: { food: 0, social: 0, transport: 0, savings: 0, misc: 0 },
       usedEvents: [],
@@ -96,7 +103,7 @@
       currentEvent: null,
       eventChoice: null,
       weekSummary: [],
-      reducedIncome: false,
+      incomeDetails: null, // { base, penalty, final }
     };
   }
 
@@ -235,10 +242,11 @@
     const existingNotice = document.querySelector('.income-notice');
     if (existingNotice) existingNotice.remove();
 
-    if (state.reducedIncome) {
+    if (state.incomeDetails && state.incomeDetails.penalty > 0) {
+      const d = state.incomeDetails;
       const notice = document.createElement('div');
       notice.className = 'income-notice';
-      notice.textContent = `One or more life meters were in the red. Your income this week is reduced to $${REDUCED_INCOME}.`;
+      notice.textContent = `Life meter penalty: -$${d.penalty} (meters below ${INCOME_PENALTY_THRESHOLD}). Income this week: $${d.final}.`;
       dom.budgetSection.insertBefore(notice, dom.budgetSection.firstChild.nextSibling);
     }
 
@@ -271,55 +279,36 @@
   function applyBudgetToMeters() {
     const m = state.lifeMeters;
 
-    // Food → Health
-    if (state.budget.food >= LOW_SPEND_THRESHOLD) {
-      const gain = Math.round(state.budget.food * METER_GAIN_RATE.food);
-      m.health = clamp(m.health + gain);
-      state.weekSummary.push({ text: `Food spending boosted Health +${gain}`, positive: true });
-    } else {
-      m.health = clamp(m.health - LOW_SPEND_PENALTY);
-      state.weekSummary.push({ text: `Low food spending — Health -${LOW_SPEND_PENALTY}`, positive: false });
-    }
+    const categories = [
+      { key: 'food', meter: 'health', label: 'Food', meterLabel: 'Health' },
+      { key: 'social', meter: 'happiness', label: 'Social', meterLabel: 'Happiness' },
+      { key: 'transport', meter: 'academicSuccess', label: 'Transport', meterLabel: 'Academics' },
+      { key: 'savings', meter: 'financialStability', label: 'Savings', meterLabel: 'Financial Stability' },
+    ];
 
-    // Social → Happiness
-    if (state.budget.social >= LOW_SPEND_THRESHOLD) {
-      const gain = Math.round(state.budget.social * METER_GAIN_RATE.social);
-      m.happiness = clamp(m.happiness + gain);
-      state.weekSummary.push({ text: `Social spending boosted Happiness +${gain}`, positive: true });
-    } else {
-      m.happiness = clamp(m.happiness - LOW_SPEND_PENALTY);
-      state.weekSummary.push({ text: `Low social spending — Happiness -${LOW_SPEND_PENALTY}`, positive: false });
-    }
-
-    // Transport → Academic Success
-    if (state.budget.transport >= LOW_SPEND_THRESHOLD) {
-      const gain = Math.round(state.budget.transport * METER_GAIN_RATE.transport);
-      m.academicSuccess = clamp(m.academicSuccess + gain);
-      state.weekSummary.push({ text: `Transport spending boosted Academics +${gain}`, positive: true });
-    } else {
-      m.academicSuccess = clamp(m.academicSuccess - LOW_SPEND_PENALTY);
-      state.weekSummary.push({ text: `Low transport spending — Academics -${LOW_SPEND_PENALTY}`, positive: false });
-    }
-
-    // Savings → Financial Stability
-    if (state.budget.savings >= LOW_SPEND_THRESHOLD) {
-      const gain = Math.round(state.budget.savings * METER_GAIN_RATE.savings);
-      m.financialStability = clamp(m.financialStability + gain);
-      state.weekSummary.push({ text: `Savings boosted Financial Stability +${gain}`, positive: true });
-    } else {
-      m.financialStability = clamp(m.financialStability - LOW_SPEND_PENALTY);
-      state.weekSummary.push({ text: `Low savings — Financial Stability -${LOW_SPEND_PENALTY}`, positive: false });
-    }
+    categories.forEach(({ key, meter, label, meterLabel: ml }) => {
+      const spent = state.budget[key];
+      const rule = LOW_SPEND[key];
+      if (spent >= rule.threshold) {
+        const gain = Math.round(spent * METER_GAIN_RATE[key]);
+        m[meter] = clamp(m[meter] + gain);
+        state.weekSummary.push({ text: `${label} spending boosted ${ml} +${gain}`, positive: true });
+      } else {
+        m[meter] = clamp(m[meter] - rule.penalty);
+        state.weekSummary.push({ text: `Low ${label.toLowerCase()} spending — ${ml} -${rule.penalty}`, positive: false });
+      }
+    });
 
     // Misc → small Happiness boost
-    if (state.budget.misc >= LOW_SPEND_THRESHOLD) {
-      const gain = Math.round(state.budget.misc * METER_GAIN_RATE.misc);
+    const miscSpent = state.budget.misc;
+    const miscRule = LOW_SPEND.misc;
+    if (miscSpent >= miscRule.threshold) {
+      const gain = Math.round(miscSpent * METER_GAIN_RATE.misc);
       m.happiness = clamp(m.happiness + gain);
       state.weekSummary.push({ text: `Misc spending boosted Happiness +${gain}`, positive: true });
     } else {
-      const penalty = Math.round(LOW_SPEND_PENALTY * 0.5);
-      m.happiness = clamp(m.happiness - penalty);
-      state.weekSummary.push({ text: `Low misc spending — Happiness -${penalty}`, positive: false });
+      m.happiness = clamp(m.happiness - miscRule.penalty);
+      state.weekSummary.push({ text: `Low misc spending — Happiness -${miscRule.penalty}`, positive: false });
     }
   }
 
@@ -438,18 +427,29 @@
     dom.btnNextWeek.onclick = advanceWeek;
   }
 
+  /* ---------- Income Calculation ---------- */
+  function calculateIncome() {
+    const m = state.lifeMeters;
+    const meters = [m.health, m.happiness, m.academicSuccess, m.financialStability];
+    let totalPenalty = 0;
+    meters.forEach((val) => {
+      if (val < INCOME_PENALTY_THRESHOLD) {
+        totalPenalty += Math.round((INCOME_PENALTY_THRESHOLD - val) * INCOME_PENALTY_PER_POINT);
+      }
+    });
+    const finalIncome = Math.max(MIN_INCOME, BASE_INCOME - totalPenalty);
+    return { base: BASE_INCOME, penalty: totalPenalty, final: finalIncome };
+  }
+
   /* ---------- Week Transition ---------- */
   function advanceWeek() {
     state.week++;
 
-    // Determine income for next week
-    const m = state.lifeMeters;
-    const anyRed = m.health <= RED_THRESHOLD || m.happiness <= RED_THRESHOLD ||
-      m.academicSuccess <= RED_THRESHOLD || m.financialStability <= RED_THRESHOLD;
-
-    state.reducedIncome = anyRed;
-    state.income = anyRed ? REDUCED_INCOME : BASE_INCOME;
-    state.money = state.income;
+    // Determine income for next week based on meter scores
+    const details = calculateIncome();
+    state.incomeDetails = details;
+    state.income = details.final;
+    state.money = details.final;
     state.weekSummary = [];
 
     showBudgetPhase();

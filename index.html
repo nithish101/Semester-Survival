@@ -26,9 +26,8 @@
           <li>You earn <strong>$500/week</strong> from a campus job.</li>
           <li>Allocate your income across 5 spending categories each week.</li>
           <li>Respond to unexpected life events that cost money.</li>
-          <li>Keep your life meters healthy — if any turns <span class="red-text">red</span>, your next paycheck drops
-            to <strong>$300</strong>.</li>
-          <li>Save <strong>$3,000</strong> for grad school to win.</li>
+          <li>Keep your life meters above <strong>80</strong> — each point below costs you income next week.</li>
+          <li>Save <strong>$1,000</strong> for grad school to win.</li>
         </ul>
       </div>
       <button id="btn-start" class="btn-primary">Start Semester</button>
@@ -78,9 +77,9 @@
           </span>
           <span class="meter-label">Health</span>
           <div class="meter-track">
-            <div id="meter-health" class="meter-fill" style="width:60%"></div>
+            <div id="meter-health" class="meter-fill" style="width:80%"></div>
           </div>
-          <span id="meter-health-val" class="meter-val">60</span>
+          <span id="meter-health-val" class="meter-val">80</span>
         </div>
         <div class="meter-row">
           <span class="meter-icon" title="Happiness">
@@ -93,9 +92,9 @@
           </span>
           <span class="meter-label">Happiness</span>
           <div class="meter-track">
-            <div id="meter-happiness" class="meter-fill" style="width:60%"></div>
+            <div id="meter-happiness" class="meter-fill" style="width:80%"></div>
           </div>
-          <span id="meter-happiness-val" class="meter-val">60</span>
+          <span id="meter-happiness-val" class="meter-val">80</span>
         </div>
         <div class="meter-row">
           <span class="meter-icon" title="Academic Success">
@@ -106,9 +105,9 @@
           </span>
           <span class="meter-label">Academics</span>
           <div class="meter-track">
-            <div id="meter-academic" class="meter-fill" style="width:60%"></div>
+            <div id="meter-academic" class="meter-fill" style="width:80%"></div>
           </div>
-          <span id="meter-academic-val" class="meter-val">60</span>
+          <span id="meter-academic-val" class="meter-val">80</span>
         </div>
         <div class="meter-row">
           <span class="meter-icon" title="Financial Stability">
@@ -119,9 +118,9 @@
           </span>
           <span class="meter-label">Financial</span>
           <div class="meter-track">
-            <div id="meter-financial" class="meter-fill" style="width:60%"></div>
+            <div id="meter-financial" class="meter-fill" style="width:80%"></div>
           </div>
-          <span id="meter-financial-val" class="meter-val">60</span>
+          <span id="meter-financial-val" class="meter-val">80</span>
         </div>
       </div>
     </section>
@@ -144,7 +143,7 @@
             </svg>
             Food
           </label>
-          <input type="range" id="slider-food" min="0" max="500" value="0" step="10" />
+          <input type="range" id="slider-food" min="0" max="500" value="0" step="5" />
           <span id="val-food" class="slider-val">$0</span>
         </div>
         <div class="slider-row">
@@ -158,7 +157,7 @@
             </svg>
             Social
           </label>
-          <input type="range" id="slider-social" min="0" max="500" value="0" step="10" />
+          <input type="range" id="slider-social" min="0" max="500" value="0" step="5" />
           <span id="val-social" class="slider-val">$0</span>
         </div>
         <div class="slider-row">
@@ -172,7 +171,7 @@
             </svg>
             Transport
           </label>
-          <input type="range" id="slider-transport" min="0" max="500" value="0" step="10" />
+          <input type="range" id="slider-transport" min="0" max="500" value="0" step="5" />
           <span id="val-transport" class="slider-val">$0</span>
         </div>
         <div class="slider-row">
@@ -185,7 +184,7 @@
             </svg>
             Savings
           </label>
-          <input type="range" id="slider-savings" min="0" max="500" value="0" step="10" />
+          <input type="range" id="slider-savings" min="0" max="500" value="0" step="5" />
           <span id="val-savings" class="slider-val">$0</span>
         </div>
         <div class="slider-row">
@@ -198,7 +197,7 @@
             </svg>
             Misc
           </label>
-          <input type="range" id="slider-misc" min="0" max="500" value="0" step="10" />
+          <input type="range" id="slider-misc" min="0" max="500" value="0" step="5" />
           <span id="val-misc" class="slider-val">$0</span>
         </div>
       </div>
@@ -230,7 +229,7 @@
     <div class="modal-card">
       <button id="btn-close-help" class="modal-close">&times;</button>
       <h2>Ideal Budget Guide</h2>
-      <p class="modal-subtitle">Recommended weekly allocations to survive the semester and reach $3,000 in savings.</p>
+      <p class="modal-subtitle">Recommended weekly allocations to survive the semester and save $1,000.</p>
       <table class="help-table">
         <thead>
           <tr>
@@ -242,27 +241,27 @@
         <tbody>
           <tr>
             <td>Food</td>
-            <td>$60</td>
-            <td>Keeps Health above red</td>
+            <td>$150</td>
+            <td>Keeps Health above 80</td>
           </tr>
           <tr>
             <td>Social</td>
-            <td>$50</td>
-            <td>Minimum to prevent Happiness decay</td>
+            <td>$75</td>
+            <td>Prevents Happiness decay</td>
           </tr>
           <tr>
             <td>Transport</td>
-            <td>$60</td>
+            <td>$30</td>
             <td>Maintains Academic Success</td>
           </tr>
           <tr>
             <td>Savings</td>
-            <td>$270</td>
-            <td>Maximizes progress toward $3,000</td>
+            <td>$220</td>
+            <td>Progress toward $1,000 goal</td>
           </tr>
           <tr>
             <td>Misc</td>
-            <td>$60</td>
+            <td>$25</td>
             <td>Small Happiness buffer</td>
           </tr>
         </tbody>
@@ -270,12 +269,10 @@
       <div class="help-tips">
         <h3>Tips</h3>
         <ul>
-          <li>Always choose the <strong>free event option</strong> to protect savings.</li>
-          <li>If a meter hits red, your next paycheck drops to $300 — avoid this at all costs.</li>
-          <li>You can shift $10-20 between Food/Social/Transport/Misc as needed, but never go below $50 in any category.
-          </li>
-          <li>With this strategy you save ~$1,620 over 6 weeks. Winning requires accepting some event costs
-            strategically for meter boosts.</li>
+          <li>Meters below 80 reduce your next paycheck — keep them healthy.</li>
+          <li>Declining events often causes steep meter drops that cost more in lost income than the event itself.</li>
+          <li>Pay for events when the meter penalty for declining would push you below 80.</li>
+          <li>Event costs come from leftover cash first, then savings — plan accordingly.</li>
         </ul>
       </div>
     </div>
