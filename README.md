@@ -9,17 +9,18 @@ A budgeting simulation game where you manage your finances during a six-week col
 - You earn **$500/week** from a campus job
 - Allocate your income across 5 spending categories: Food, Social, Transportation, Savings, and Miscellaneous
 - Respond to unexpected life events that cost money
-- Keep your 4 life meters (Health, Happiness, Academic Success, Financial Stability) out of the red — or your next paycheck drops to **$300**
-- Save **$3,000** for grad school to win
+- Keep your life meters above **80** — each point below costs you income next week
+- Save **$1,000** for grad school to win
 
 ## Game Features
 
 - **Budget sliders** with real-time remaining-budget tracking
 - **4 life meters** with green/yellow/red color thresholds
 - **5 unique random events** (dinner invite, laptop repair, club dues, concert, medical bill)
-- **Passive weekly decay** — meters naturally drop each week, requiring consistent spending just to stay afloat
+- **Meter-based income** — meters below 80 proportionally reduce next week's paycheck
+- **Passive weekly decay** — meters naturally drop each week, requiring consistent spending
 - **Win/loss conditions** based on savings goal and meter health
-- **Help button** (?) in the corner with an ideal budget guide for the prototype
+- **Help button** (?) in the corner with the ideal budget guide
 
 ## Running Locally
 
