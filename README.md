@@ -1,6 +1,8 @@
 # Semester Survival
 
-A short budgeting simulation game where you take the role of a college student managing finances during a six-week semester.
+A budgeting simulation game where you manage your finances during a six-week college semester.
+
+**[Play Now](https://nithish101.github.io/Semester-Survival/)**
 
 ## How to Play
 
@@ -15,9 +17,11 @@ A short budgeting simulation game where you take the role of a college student m
 - **Budget sliders** with real-time remaining-budget tracking
 - **4 life meters** with green/yellow/red color thresholds
 - **5 unique random events** (dinner invite, laptop repair, club dues, concert, medical bill)
+- **Passive weekly decay** — meters naturally drop each week, requiring consistent spending just to stay afloat
 - **Win/loss conditions** based on savings goal and meter health
+- **Help button** (?) in the corner with an ideal budget guide for the prototype
 
-## Getting Started
+## Running Locally
 
 Open `index.html` in your browser, or serve it locally:
 
