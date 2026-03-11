@@ -4,7 +4,9 @@
    ============================================================ */
 
 /* ---------- Reset & Base ---------- */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -23,8 +25,14 @@ body {
 }
 
 /* ---------- Utility ---------- */
-.hidden { display: none !important; }
-.red-text { color: #d7263d; font-weight: 600; }
+.hidden {
+  display: none !important;
+}
+
+.red-text {
+  color: #d7263d;
+  font-weight: 600;
+}
 
 /* ---------- Overlays (Start / End) ---------- */
 .overlay {
@@ -265,8 +273,13 @@ body {
   transition: width 0.4s ease, background-color 0.4s ease;
 }
 
-.meter-fill.yellow { background: #eab308; }
-.meter-fill.red    { background: #d7263d; }
+.meter-fill.yellow {
+  background: #eab308;
+}
+
+.meter-fill.red {
+  background: #d7263d;
+}
 
 .meter-val {
   width: 30px;
@@ -285,7 +298,9 @@ body {
   text-align: center;
 }
 
-.budget-remaining.over { color: #d7263d; }
+.budget-remaining.over {
+  color: #d7263d;
+}
 
 .slider-group {
   display: flex;
@@ -335,7 +350,7 @@ body {
   background: #3b82f6;
   cursor: pointer;
   border: 2px solid #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 .slider-row input[type="range"]::-moz-range-thumb {
@@ -345,7 +360,7 @@ body {
   background: #3b82f6;
   cursor: pointer;
   border: 2px solid #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 .slider-val {
@@ -393,8 +408,15 @@ body {
   margin-bottom: 6px;
 }
 
-.summary-content .positive { color: #16a34a; font-weight: 600; }
-.summary-content .negative { color: #d7263d; font-weight: 600; }
+.summary-content .positive {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.summary-content .negative {
+  color: #d7263d;
+  font-weight: 600;
+}
 
 #summary-section .btn-primary {
   display: block;
@@ -413,18 +435,165 @@ body {
   text-align: center;
 }
 
+/* ---------- Help Button & Modal ---------- */
+.help-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #1a1a2e;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  z-index: 50;
+  transition: background 0.15s ease;
+}
+
+.help-btn:hover {
+  background: #3b82f6;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.modal-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 32px 28px 28px;
+  max-width: 480px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  font-family: inherit;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: #1a1a2e;
+}
+
+.modal-card h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #1a1a2e;
+}
+
+.modal-subtitle {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 18px;
+}
+
+.help-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+}
+
+.help-table th {
+  text-align: left;
+  font-weight: 600;
+  color: #6b7280;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 6px 8px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.help-table td {
+  padding: 8px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+}
+
+.help-table td:nth-child(2) {
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.help-tips {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 14px 18px;
+}
+
+.help-tips h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.help-tips ul {
+  list-style: none;
+  padding: 0;
+}
+
+.help-tips li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 6px;
+  font-size: 0.83rem;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.help-tips li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3b82f6;
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 480px) {
   .overlay-card {
     padding: 32px 20px;
   }
+
   #header {
     flex-direction: column;
   }
+
   .slider-row label {
     width: 90px;
     font-size: 0.8rem;
   }
+
   .meter-label {
     width: 64px;
     font-size: 0.8rem;

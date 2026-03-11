@@ -222,6 +222,65 @@
 
   </div>
 
+  <!-- Help Button -->
+  <button id="btn-help" class="help-btn" title="Show ideal budget">?</button>
+
+  <!-- Help Modal -->
+  <div id="help-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <button id="btn-close-help" class="modal-close">&times;</button>
+      <h2>Ideal Budget Guide</h2>
+      <p class="modal-subtitle">Recommended weekly allocations to survive the semester and reach $3,000 in savings.</p>
+      <table class="help-table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Food</td>
+            <td>$60</td>
+            <td>Keeps Health above red</td>
+          </tr>
+          <tr>
+            <td>Social</td>
+            <td>$50</td>
+            <td>Minimum to prevent Happiness decay</td>
+          </tr>
+          <tr>
+            <td>Transport</td>
+            <td>$60</td>
+            <td>Maintains Academic Success</td>
+          </tr>
+          <tr>
+            <td>Savings</td>
+            <td>$270</td>
+            <td>Maximizes progress toward $3,000</td>
+          </tr>
+          <tr>
+            <td>Misc</td>
+            <td>$60</td>
+            <td>Small Happiness buffer</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="help-tips">
+        <h3>Tips</h3>
+        <ul>
+          <li>Always choose the <strong>free event option</strong> to protect savings.</li>
+          <li>If a meter hits red, your next paycheck drops to $300 — avoid this at all costs.</li>
+          <li>You can shift $10-20 between Food/Social/Transport/Misc as needed, but never go below $50 in any category.
+          </li>
+          <li>With this strategy you save ~$1,620 over 6 weeks. Winning requires accepting some event costs
+            strategically for meter boosts.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <script src="game.js"></script>
 </body>
 

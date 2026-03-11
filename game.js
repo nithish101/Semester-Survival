@@ -516,6 +516,17 @@
     dom.btnSubmitBudget.addEventListener('click', submitBudget);
     dom.btnStart.addEventListener('click', startGame);
     dom.btnRestart.addEventListener('click', startGame);
+
+    // Help modal
+    const helpModal = document.getElementById('help-modal');
+    const btnHelp = document.getElementById('btn-help');
+    const btnCloseHelp = document.getElementById('btn-close-help');
+
+    btnHelp.addEventListener('click', () => helpModal.classList.remove('hidden'));
+    btnCloseHelp.addEventListener('click', () => helpModal.classList.add('hidden'));
+    helpModal.addEventListener('click', (e) => {
+      if (e.target === helpModal) helpModal.classList.add('hidden');
+    });
   }
 
   document.addEventListener('DOMContentLoaded', init);
