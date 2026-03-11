@@ -17,16 +17,19 @@
 
   /* How much a well-funded category boosts its meter per $1 spent */
   const METER_GAIN_RATE = {
-    food: 0.14,         // Food → Health
-    social: 0.16,       // Social → Happiness
-    transport: 0.14,    // Transport → Academic Success
-    savings: 0.12,      // Savings → Financial Stability
-    misc: 0.06,         // Misc → small Happiness
+    food: 0.07,         // Food → Health
+    social: 0.08,       // Social → Happiness
+    transport: 0.07,    // Transport → Academic Success
+    savings: 0.06,      // Savings → Financial Stability
+    misc: 0.03,         // Misc → small Happiness
   };
 
-  /* Decay when category receives < $30 */
-  const LOW_SPEND_THRESHOLD = 30;
-  const LOW_SPEND_PENALTY = 10;
+  /* Decay when category receives < $50 */
+  const LOW_SPEND_THRESHOLD = 50;
+  const LOW_SPEND_PENALTY = 15;
+
+  /* Passive decay applied to all meters each week */
+  const PASSIVE_DECAY = 5;
 
   /* ---------- Events Pool ---------- */
   const EVENTS = [
@@ -82,10 +85,10 @@
       savings: 0,
       income: BASE_INCOME,
       lifeMeters: {
-        health: 70,
-        happiness: 70,
-        academicSuccess: 70,
-        financialStability: 70,
+        health: 60,
+        happiness: 60,
+        academicSuccess: 60,
+        financialStability: 60,
       },
       budget: { food: 0, social: 0, transport: 0, savings: 0, misc: 0 },
       usedEvents: [],
@@ -256,8 +259,9 @@
     state.money -= total;
     state.savings += state.budget.savings;
 
-    // Update meters from spending
+    // Apply passive decay to all meters first, then budget effects
     state.weekSummary = [];
+    applyPassiveDecay();
     applyBudgetToMeters();
 
     render();
@@ -312,7 +316,21 @@
       const gain = Math.round(state.budget.misc * METER_GAIN_RATE.misc);
       m.happiness = clamp(m.happiness + gain);
       state.weekSummary.push({ text: `Misc spending boosted Happiness +${gain}`, positive: true });
+    } else {
+      const penalty = Math.round(LOW_SPEND_PENALTY * 0.5);
+      m.happiness = clamp(m.happiness - penalty);
+      state.weekSummary.push({ text: `Low misc spending — Happiness -${penalty}`, positive: false });
     }
+  }
+
+  /* ---------- Passive Decay ---------- */
+  function applyPassiveDecay() {
+    const m = state.lifeMeters;
+    m.health = clamp(m.health - PASSIVE_DECAY);
+    m.happiness = clamp(m.happiness - PASSIVE_DECAY);
+    m.academicSuccess = clamp(m.academicSuccess - PASSIVE_DECAY);
+    m.financialStability = clamp(m.financialStability - PASSIVE_DECAY);
+    state.weekSummary.push({ text: `Weekly life pressure — all meters -${PASSIVE_DECAY}`, positive: false });
   }
 
   /* ---------- Phase: Event ---------- */
@@ -427,7 +445,7 @@
     // Determine income for next week
     const m = state.lifeMeters;
     const anyRed = m.health <= RED_THRESHOLD || m.happiness <= RED_THRESHOLD ||
-                   m.academicSuccess <= RED_THRESHOLD || m.financialStability <= RED_THRESHOLD;
+      m.academicSuccess <= RED_THRESHOLD || m.financialStability <= RED_THRESHOLD;
 
     state.reducedIncome = anyRed;
     state.income = anyRed ? REDUCED_INCOME : BASE_INCOME;
@@ -475,7 +493,7 @@
   function checkAllMetersCritical() {
     const m = state.lifeMeters;
     return m.health <= RED_THRESHOLD && m.happiness <= RED_THRESHOLD &&
-           m.academicSuccess <= RED_THRESHOLD && m.financialStability <= RED_THRESHOLD;
+      m.academicSuccess <= RED_THRESHOLD && m.financialStability <= RED_THRESHOLD;
   }
 
   /* ---------- Init ---------- */
