@@ -1,0 +1,432 @@
+/* ============================================================
+   Semester Survival — Stylesheet
+   Flat, minimal dashboard aesthetic
+   ============================================================ */
+
+/* ---------- Reset & Base ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #f0f2f5;
+  color: #1a1a2e;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* ---------- Utility ---------- */
+.hidden { display: none !important; }
+.red-text { color: #d7263d; font-weight: 600; }
+
+/* ---------- Overlays (Start / End) ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f2f5;
+}
+
+.overlay-card {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 48px 40px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+}
+
+.overlay-card h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #1a1a2e;
+}
+
+.tagline {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-bottom: 28px;
+}
+
+.rules-box {
+  text-align: left;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 28px;
+}
+
+.rules-box h2 {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+.rules-box ul {
+  list-style: none;
+  padding: 0;
+}
+
+.rules-box li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.rules-box li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3b82f6;
+}
+
+/* End screen extras */
+.end-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+.end-stats {
+  text-align: left;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 20px 0 24px;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.end-stats p {
+  margin-bottom: 4px;
+}
+
+/* ---------- Buttons ---------- */
+.btn-primary {
+  display: inline-block;
+  padding: 12px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+}
+
+.btn-primary:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  display: inline-block;
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: inherit;
+  background: #fff;
+  color: #1a1a2e;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-secondary:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+/* ---------- Game Screen ---------- */
+#game-screen {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px 16px 48px;
+}
+
+/* ---------- Header ---------- */
+#header {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.header-item {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 14px 16px;
+  text-align: center;
+}
+
+.header-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.header-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7280;
+  margin-bottom: 16px;
+}
+
+/* ---------- Life Meters ---------- */
+.meters-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.meter-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.meter-icon {
+  display: flex;
+  align-items: center;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.meter-label {
+  width: 80px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #374151;
+  flex-shrink: 0;
+}
+
+.meter-track {
+  flex: 1;
+  height: 16px;
+  background: #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  border-radius: 8px;
+  background: #22c55e;
+  transition: width 0.4s ease, background-color 0.4s ease;
+}
+
+.meter-fill.yellow { background: #eab308; }
+.meter-fill.red    { background: #d7263d; }
+
+.meter-val {
+  width: 30px;
+  text-align: right;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+  flex-shrink: 0;
+}
+
+/* ---------- Budget Section ---------- */
+.budget-remaining {
+  font-size: 0.95rem;
+  color: #374151;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.budget-remaining.over { color: #d7263d; }
+
+.slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.slider-row label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 110px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #374151;
+  flex-shrink: 0;
+}
+
+.cat-icon {
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.slider-row input[type="range"] {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 4px;
+  background: #e5e7eb;
+  outline: none;
+}
+
+.slider-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.slider-row input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.slider-val {
+  width: 50px;
+  text-align: right;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  flex-shrink: 0;
+}
+
+#budget-section .btn-primary {
+  display: block;
+  width: 100%;
+}
+
+/* ---------- Event Section ---------- */
+.event-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #374151;
+  margin-bottom: 20px;
+}
+
+.event-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.event-buttons .btn-secondary {
+  flex: 1;
+  min-width: 140px;
+  text-align: center;
+}
+
+/* ---------- Summary Section ---------- */
+.summary-content {
+  margin-bottom: 20px;
+}
+
+.summary-content p {
+  font-size: 0.9rem;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.summary-content .positive { color: #16a34a; font-weight: 600; }
+.summary-content .negative { color: #d7263d; font-weight: 600; }
+
+#summary-section .btn-primary {
+  display: block;
+  width: 100%;
+}
+
+/* ---------- Income notice ---------- */
+.income-notice {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  color: #92400e;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  .overlay-card {
+    padding: 32px 20px;
+  }
+  #header {
+    flex-direction: column;
+  }
+  .slider-row label {
+    width: 90px;
+    font-size: 0.8rem;
+  }
+  .meter-label {
+    width: 64px;
+    font-size: 0.8rem;
+  }
+}
