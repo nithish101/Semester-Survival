@@ -331,45 +331,50 @@ body {
   flex-shrink: 0;
 }
 
-.slider-row input[type="range"] {
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0 10px;
   flex: 1;
-  -webkit-appearance: none;
-  appearance: none;
-  height: 8px;
-  border-radius: 4px;
-  background: #e5e7eb;
+  transition: border-color 0.2s;
+}
+
+.input-wrapper:focus-within {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.currency-prefix {
+  color: #6b7280;
+  font-weight: 500;
+  margin-right: 4px;
+}
+
+.budget-input {
+  border: none;
   outline: none;
-}
-
-.slider-row input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #3b82f6;
-  cursor: pointer;
-  border: 2px solid #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-}
-
-.slider-row input[type="range"]::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #3b82f6;
-  cursor: pointer;
-  border: 2px solid #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-}
-
-.slider-val {
-  width: 50px;
-  text-align: right;
-  font-size: 0.85rem;
+  font-family: inherit;
+  font-size: 1rem;
   font-weight: 600;
   color: #1a1a2e;
-  flex-shrink: 0;
+  width: 100%;
+  padding: 8px 0;
+  background: transparent;
+}
+
+/* Hide number input spinners */
+.budget-input::-webkit-outer-spin-button,
+.budget-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.budget-input[type=number] {
+  -moz-appearance: textfield;
 }
 
 #budget-section .btn-primary {

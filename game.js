@@ -171,19 +171,35 @@
   }
 
   function totalAllocated() {
-    return sliderKeys.reduce((sum, k) => sum + parseInt(getSlider(k).value, 10), 0);
+    return sliderKeys.reduce((sum, k) => {
+      const val = parseInt(getSlider(k).value, 10);
+      return sum + (isNaN(val) ? 0 : val);
+    }, 0);
   }
 
-  function updateBudgetUI() {
+  function updateBudgetUI(e) {
+    if (e && e.target) {
+      // Prevent negative values
+      if (e.target.value < 0) e.target.value = 0;
+
+      const val = parseInt(e.target.value, 10) || 0;
+      const otherTotal = sliderKeys.reduce((sum, k) => {
+        if (getSlider(k) === e.target) return sum;
+        const v = parseInt(getSlider(k).value, 10);
+        return sum + (isNaN(v) ? 0 : v);
+      }, 0);
+
+      const maxAllowed = state.money - otherTotal;
+      if (val > maxAllowed) {
+        e.target.value = maxAllowed;
+      }
+    }
+
     const total = totalAllocated();
     const remaining = state.money - total;
 
     dom.budgetRemaining.innerHTML = `Remaining: <strong>$${remaining}</strong>`;
     dom.budgetRemaining.classList.toggle('over', remaining < 0);
-
-    sliderKeys.forEach((k) => {
-      getValSpan(k).textContent = `$${parseInt(getSlider(k).value, 10)}`;
-    });
 
     // Enable submit only when total <= money and total > 0
     dom.btnSubmitBudget.disabled = remaining < 0 || total === 0;
@@ -191,9 +207,9 @@
 
   function resetSliders() {
     sliderKeys.forEach((k) => {
-      const slider = getSlider(k);
-      slider.max = state.money;
-      slider.value = 0;
+      const input = getSlider(k);
+      // Autofill with last week's budget (or 0 for week 1)
+      input.value = state.budget[k] || 0;
     });
     updateBudgetUI();
   }
