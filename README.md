@@ -4,6 +4,11 @@ A budgeting simulation game where you manage your finances during a six-week col
 
 **[Play Now](https://nithish101.github.io/Semester-Survival/)**
 
+| | | |
+|---|---|---|
+| ![Week 1 budget: $500 split across Food $150, Social $75, Transport $30, Savings $220 and Misc $25, with all four life meters at 80](docs/screenshots/budget.png) | ![Unexpected event card: club dues of $50, with the choice to pay or skip the club this semester](docs/screenshots/event.png) | ![Week summary listing the weekly -5 life pressure, each category's meter boost, and the event's cost and effect](docs/screenshots/summary.png) |
+| Allocate the week's pay | Respond to an unexpected event | See how the week went |
+
 ## How to Play
 
 - You earn **$500/week** from a campus job
